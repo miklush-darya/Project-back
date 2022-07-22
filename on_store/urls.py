@@ -14,8 +14,26 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from django.conf.urls.static import static
+from on_store import settings
+from user.views import UserApiView
+from prod_and_cat.views import CategoryApiView, ProductApiView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('__debug__/', include('debug_toolbar.urls')),
+    path('api/v1/user/', UserApiView.as_view()),
+    path('api/v2/category/', CategoryApiView.as_view()),
+    path('api/v3/products/', ProductApiView.as_view()),
+    path('api/v3/products/<int:pk>/', ProductApiView.as_view()),
 ]
+
+
+# if settings.DEBUG:
+#     # import debug_toolbar
+#     urlpatterns = [
+#         path('__debug__/', include('debug_toolbar.urls')),
+#     ] + urlpatterns
+ 
+#     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
